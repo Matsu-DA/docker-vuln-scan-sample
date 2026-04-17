@@ -1,0 +1,3 @@
+# Trivy Allowlist
+# ignore = 「非表示」であって「無害」ではない
+# フォーマット: CVE-XXXX-XXXXX  # 理由 / 判断日

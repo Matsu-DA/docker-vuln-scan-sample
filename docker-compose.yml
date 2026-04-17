@@ -1,0 +1,26 @@
+services:
+  target:
+    build: ./target
+    image: vuln-scan-target:latest
+    command: ["true"]
+
+  scanner:
+    build: ./scan
+    depends_on:
+      target:
+        condition: service_completed_successfully
+    environment:
+      - TARGET_IMAGE=vuln-scan-target:latest
+      - SEVERITY_LEVELS=HIGH,CRITICAL
+      - MODE=local
+      - SHOW_UNFIXED=false
+      - STRICT_LOCAL=false
+      - MAX_DISPLAY=20
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./output:/output
+      - ./.trivyignore:/trivyignore:ro
+      - trivy-cache:/root/.cache/trivy
+
+volumes:
+  trivy-cache:
